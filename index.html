@@ -6,6 +6,7 @@
   <title>Khalid Muhammed | CS Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     * {
       margin: 0;
@@ -818,27 +819,67 @@
   renderProjects();
   
   const contactForm = document.getElementById('contactForm');
-  const feedbackPara = document.getElementById('formFeedback');
-  contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('nameInput').value.trim();
-    const email = document.getElementById('emailInput').value.trim();
-    const message = document.getElementById('msgInput').value.trim();
-    if (!name || !email || !message) {
-      feedbackPara.style.color = "#dc2626";
-      feedbackPara.innerHTML = "❌ Please fill all fields before sending.";
-      return;
-    }
-    if (!email.includes('@') || !email.includes('.')) {
-      feedbackPara.style.color = "#dc2626";
-      feedbackPara.innerHTML = "📧 Please enter a valid email address.";
-      return;
-    }
+const feedbackPara = document.getElementById('formFeedback');
+const submitBtn = document.getElementById('submitBtn');
+
+// Initialize EmailJS - YOU MUST REPLACE WITH YOUR OWN KEYS
+(function() {
+  emailjs.init("ZQeLHigq39ppsFny2");
+})();
+
+contactForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const name = document.getElementById('nameInput').value.trim();
+  const email = document.getElementById('emailInput').value.trim();
+  const message = document.getElementById('msgInput').value.trim();
+  
+  if (!name || !email || !message) {
+    feedbackPara.style.color = "#dc2626";
+    feedbackPara.innerHTML = "❌ Please fill all fields before sending.";
+    return;
+  }
+  if (!email.includes('@') || !email.includes('.')) {
+    feedbackPara.style.color = "#dc2626";
+    feedbackPara.innerHTML = "📧 Please enter a valid email address.";
+    return;
+  }
+  
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Sending...';
+  
+  const templateParams = {
+    from_name: name,
+    from_email: email,
+    message: message,
+    to_email: "kheludi64@gmail.com",
+    reply_to: email
+  };
+  
+  try {
+    const response = await emailjs.send(
+      "service_vm5rn6i",
+      "template_x3wn8zc",
+      templateParams
+    );
+    
     feedbackPara.style.color = "#10b981";
-    feedbackPara.innerHTML = "✨ Message sent! (demo) — Thanks for reaching out, Khalid will reply soon!";
+    feedbackPara.innerHTML = "✅ Message sent successfully! I'll get back to you soon.";
     contactForm.reset();
-    setTimeout(() => feedbackPara.innerHTML = "", 4000);
-  });
+  } catch (error) {
+    console.error("EmailJS Error:", error);
+    feedbackPara.style.color = "#dc2626";
+    feedbackPara.innerHTML = "❌ Failed to send message. Please try again or email me directly.";
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+    setTimeout(() => {
+      if (feedbackPara.innerHTML.includes("successfully")) {
+        feedbackPara.innerHTML = "";
+      }
+    }, 5000);
+  }
+});
   
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {

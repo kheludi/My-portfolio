@@ -563,7 +563,6 @@
     <div class="nav-left">
       <div class="profile-container" id="profileContainer">
         <img class="profile-pic" id="profileImage" src="images/im3.png" alt="Profile Picture">
-        </div>
       </div>
       <input type="file" id="profileUpload" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
       <div class="logo gradient-text">&lt;Khalid Muhammed/&gt;</div>
@@ -688,34 +687,6 @@
 
 <script>
   const profileContainer = document.getElementById('profileContainer');
-  const profileUploadInput = document.getElementById('profileUpload');
-  const profileImage = document.getElementById('profileImage');
-  
-  profileContainer.addEventListener('click', (e) => {
-    e.stopPropagation();
-    profileUploadInput.click();
-  });
-  
-  profileUploadInput.addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        profileImage.src = e.target.result;
-        localStorage.setItem('khalidProfilePicture', e.target.result);
-        showFloatingMessage('✅ Profile picture updated successfully!', '#10b981');
-      };
-      reader.readAsDataURL(file);
-    } else if (file) {
-      showFloatingMessage('❌ Please select a valid image (JPG, PNG, GIF, WEBP)', '#ef4444');
-    }
-  });
-  
-  const savedPicture = localStorage.getItem('khalidProfilePicture');
-  if (savedPicture && savedPicture.startsWith('data:image')) {
-    profileImage.src = savedPicture;
-  }
-  
   function showFloatingMessage(msg, bgColor) {
     const toast = document.createElement('div');
     toast.textContent = msg;
@@ -930,15 +901,6 @@
     el.style.transform = 'translateY(20px)';
     el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     observer.observe(el);
-  });
-  
-  profileImage.addEventListener('dblclick', (e) => {
-    e.stopPropagation();
-    if (confirm('Reset profile picture to default?')) {
-      profileImage.src = 'images/im3.png';
-      localStorage.removeItem('khalidProfilePicture');
-      showFloatingMessage('🔄 Profile picture reset to original', '#64748b');
-    }
   });
 </script>
 </body>

@@ -1,6 +1,5 @@
 // Profile upload functionality
 const profileContainer = document.getElementById('profileContainer');
-const profileUploadInput = document.getElementById('profileUpload');
 const profileImage = document.getElementById('profileImage');
 
 profileContainer.addEventListener('click', (e) => {
@@ -8,19 +7,7 @@ profileContainer.addEventListener('click', (e) => {
   profileUploadInput.click();
 });
 
-profileUploadInput.addEventListener('change', (event) => {
-  const file = event.target.files[0];
-  if (file && (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg')) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      profileImage.src = e.target.result;
-      showFloatingMessage('Profile picture updated!', '#10b981');
-    };
-    reader.readAsDataURL(file);
-  } else {
-    showFloatingMessage('Please upload a valid image (JPEG/PNG)', '#ef4444');
-  }
-});
+
 
 // Toast notification helper
 function showFloatingMessage(msg, bgColor) {

@@ -1,6 +1,6 @@
 # My-portfolio
 
-##Screenshots
+#Screenshots
 
 Home Section
 <img width="1901" height="1003" alt="Screenshot 2026-04-24 204652" src="https://github.com/user-attachments/assets/b0fbdee5-062f-404b-b02e-cc90f47d7bdb" />
